@@ -19,7 +19,7 @@ function VerifyOTP() {
       navigate('/signup');
     }
     inputRefs[0].current?.focus();
-  }, [email, navigate]);
+  }, [email, navigate, inputRefs]);
 
   const handleChange = (index, value) => {
     if (value.length > 1) return;
