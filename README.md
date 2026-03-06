@@ -2,134 +2,235 @@
 
 ## 🚀 Overview
 
-Greivex is an innovative, AI-driven platform designed to revolutionize the way civic grievances are reported, managed, and resolved. The system empowers citizens to seamlessly communicate public service issues to the appropriate authorities, while leveraging advanced artificial intelligence to ensure efficient, transparent, and timely resolution.
+**Greivex** is an innovative AI-powered civic grievance management platform designed to transform how citizens report and track public service issues. The platform bridges the gap between citizens and government departments by intelligently classifying complaints, prioritizing urgent issues, and ensuring transparent resolution.
 
-Greivex bridges the gap between citizens and service providers, fostering a more responsive, accountable, and technology-enabled governance ecosystem.
+Using Artificial Intelligence, Greivex automates complaint routing, detects duplicate submissions, evaluates urgency levels, and provides real-time tracking for citizens while offering powerful dashboards for authorities.
+
+The goal is to create a **smart, transparent, and efficient grievance redressal ecosystem**.
 
 ---
 
-## ✨ Key Features
+# 🌐 Live Access (For Judges)
+
+To make evaluation easier, demo credentials are provided below.
+
+## 👤 Citizen Login
+
+Email: **prajinkumar2020@gmail.com**  
+Password: **Prajin@123**
+
+---
+
+## 🛠 Admin Login
+
+Email: **admin@tnsmp.gov.in**  
+Password: **admin@tnsmp2026**
+
+---
+
+## ⭐ Key Features
 
 ### 🧠 AI-Based Department Classification
-- Users can submit complaints by uploading live photos or detailed descriptions.
-- Integrates **Google Cloud Vision API** for image analysis.
-- Uses advanced language models via **OpenRouter (DeepSeek, Gemini)** for text processing.
-- Automatically identifies the correct government department (Water, Electricity, Roads, etc.).
-- Reduces manual intervention and routing errors.
+Users can submit complaints by uploading photos or describing issues.
+
+The system uses:
+
+- **Google Cloud Vision API** for image analysis
+- **OpenRouter (DeepSeek / Gemini models)** for text processing
+
+The AI automatically identifies the responsible department such as:
+
+- Water Supply
+- Electricity
+- Roads
+- Waste Management
+- Public Infrastructure
+
+This eliminates manual routing errors and speeds up resolution.
 
 ---
 
-### ⚡ Intelligent Prioritization
-- AI-powered Natural Language Processing evaluates complaint urgency.
-- Automatically assigns priority levels:
-  - 🔴 Critical  
-  - 🟠 High  
-  - 🟡 Medium  
-  - 🟢 Low  
-- Ensures high-impact and emergency issues are resolved first.
+### ⚡ Intelligent Complaint Prioritization
+
+Using Natural Language Processing (NLP), the system evaluates complaint urgency and assigns priority levels:
+
+🔴 Critical  
+🟠 High  
+🟡 Medium  
+🟢 Low  
+
+Urgent problems like **water leakage, electrical hazards, or road accidents** are automatically prioritized.
 
 ---
 
 ### 🔍 Duplicate & Fake Complaint Detection
-- AI-driven similarity checks detect repeated or spam complaints.
-- Prevents misuse and reduces administrative overhead.
-- Ensures genuine issues receive focused attention.
+
+Greivex includes AI-powered similarity detection that:
+
+- Identifies duplicate complaints
+- Prevents spam or fake reports
+- Reduces administrative overload
+
+This ensures authorities focus only on genuine issues.
 
 ---
 
 ### 📍 Automated Location Detection
-- Captures GPS location during complaint submission.
-- Uses reverse geocoding to auto-fill area/locality.
-- Improves jurisdiction accuracy and speeds up reporting.
+
+The platform automatically captures the user's location using:
+
+- GPS location detection
+- Reverse Geocoding
+
+This allows complaints to be routed to the **correct jurisdiction automatically**, improving response speed.
 
 ---
 
 ### 📊 Role-Based Dashboards
-- 👤 **Citizens:** Track complaints in real time.
-- 🛠 **Service Providers:** Manage tasks and update statuses.
-- 📈 **Management:** Monitor analytics and department performance.
+
+Greivex provides tailored dashboards for different users.
+
+#### 👤 Citizens
+- Submit complaints
+- Track status in real-time
+- Receive updates
+
+#### 🛠 Service Providers
+- View assigned tasks
+- Update complaint status
+- Manage issue resolution
+
+#### 📈 Management / Admin
+- Monitor department performance
+- Analyze complaint trends
+- Track resolution metrics
 
 ---
 
-### 📦 Amazon-Style Status Timeline
-Each complaint follows a clear workflow:
+### 📦 Amazon-Style Complaint Status Tracking
 
-- Real-time updates
-- Transparent tracking
-- User notifications at every stage
+Every complaint follows a clear workflow with transparent updates:
+
+1. Complaint Submitted  
+2. Assigned to Department  
+3. In Progress  
+4. Issue Resolved  
+
+Users receive real-time updates at every stage.
 
 ---
 
 ### 📧 Automated Email Notifications
-- OTP-based verification during registration/login.
-- Status updates sent via email.
-- Keeps users informed throughout the lifecycle.
+
+The system uses automated email notifications for:
+
+- OTP verification during login/registration
+- Complaint status updates
+- Resolution notifications
+
+This keeps users informed throughout the complaint lifecycle.
 
 ---
 
 ### 🎨 Modern Responsive UI/UX
-- Built with **React.js**
-- Mobile responsive design
-- Live feedback and smooth interactions
-- Clean and intuitive interface
+
+The platform features a clean and intuitive interface built using:
+
+- **React.js**
+- Responsive design
+- Real-time UI updates
+- Smooth interactions
+
+The system works seamlessly across **desktop, tablet, and mobile devices**.
 
 ---
 
 ### 🔐 Secure Authentication & Access Control
-- JWT-based authentication
-- Role-Based Access Control (RBAC)
-- Secure data handling and privacy protection
+
+Greivex ensures secure access through:
+
+- **JWT-based authentication**
+- **Role-Based Access Control (RBAC)**
+- Secure API communication
+- Protected user data
 
 ---
 
-## 🛠 Technical Stack
+# 🛠 Technical Stack
 
-### 🌐 Frontend
+## 🌐 Frontend
+
 - React.js  
 - Context API  
-- Modern Hooks  
-- Responsive Design  
+- Modern React Hooks  
+- Responsive UI Design  
 
-### ⚙ Backend
+---
+
+## ⚙ Backend
+
 - Node.js  
 - Express.js  
-- MongoDB (Mongoose)  
-
-### 🤖 AI/ML Integration
-- Google Cloud Vision API  
-- OpenRouter (DeepSeek, Gemini)  
-- Custom NLP fallback (offline scenarios)  
-
-### 🔧 Additional Technologies
-- JWT Authentication  
-- RESTful APIs  
-- Nodemailer (Email Services)  
-- GPS & Reverse Geocoding  
-- Role-Based Dashboards  
+- MongoDB (Mongoose ODM)  
 
 ---
 
-## 💡 Impact & Innovation
+## 🤖 AI & Machine Learning
 
-Greivex transforms civic grievance redressal by harnessing artificial intelligence to streamline the entire complaint lifecycle — from submission and classification to prioritization, resolution, and feedback.
-
-By automating department detection, urgency assessment, and duplicate filtering, the platform:
-
-- Reduces manual workload for government staff  
-- Improves complaint resolution speed  
-- Enhances transparency and accountability  
-- Strengthens trust between citizens and authorities  
-
-The result is a smarter, faster, and more citizen-centric public service system.
+- Google Cloud Vision API
+- OpenRouter (DeepSeek / Gemini)
+- Natural Language Processing
+- Duplicate complaint similarity detection
 
 ---
 
-## 📌 Vision
+## 🔧 Additional Technologies
 
-To build a transparent, AI-powered civic infrastructure that empowers citizens and enables governments to respond efficiently, intelligently, and responsibly.
+- JWT Authentication
+- REST APIs
+- Nodemailer (Email notifications)
+- GPS Location Detection
+- Reverse Geocoding
+- Role-Based Dashboards
 
 ---
 
-## 📜 License
+# 💡 Impact & Innovation
 
-This project is licensed under the MIT License.
+Greivex introduces **AI-driven governance tools** that drastically improve grievance management by:
+
+- Automatically identifying responsible departments
+- Prioritizing urgent civic problems
+- Detecting duplicate complaints
+- Providing transparent complaint tracking
+
+This reduces manual workload for government staff and significantly improves resolution speed.
+
+The platform ultimately promotes:
+
+- Transparency
+- Accountability
+- Faster public service delivery
+- Improved citizen trust in governance
+
+---
+
+# 📌 Vision
+
+To build a **smart civic infrastructure powered by artificial intelligence** that enables governments to respond faster, manage complaints efficiently, and deliver better public services.
+
+---
+
+# 📜 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+# 👨‍💻 Developed By
+
+**Prajin Kumar P**  
+BE Computer Science and Engineering  
+St. Joseph's Institute of Technology  
+
+Email: prajinkumar2020@gmail.com  
