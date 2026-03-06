@@ -118,37 +118,68 @@ const DEPARTMENT_KEYWORDS = {
   }
 };
 
+const SPACE_URL = 'https://nevesh06-blaze.hf.space';
+
 /**
  * Analyze an image using the HuggingFace Gradio Space (Nevesh06/Blaze).
- * Accepts a base64-encoded image string (with or without data URI prefix).
- * Returns { labels, objects, detectedText, webEntities, source, directDepartment, directReason, directConfidence }
+ * Flow: POST image buffer to Space upload endpoint → get server path →
+ *       build public URL for that path → call /predict_issue via REST queue.
  */
 async function analyzeImage(base64Image) {
   try {
-    // Ensure proper data URI format so we can build a Blob from it
+    // Ensure proper data URI format
     let dataUri = base64Image;
     if (!dataUri.startsWith('data:')) {
       dataUri = `data:image/jpeg;base64,${dataUri}`;
     }
-
-    // Convert the base64 data URI to a Blob
-    const base64Data = dataUri.split(',')[1];
     const mimeType = dataUri.split(';')[0].split(':')[1] || 'image/jpeg';
-    const byteCharacters = Buffer.from(base64Data, 'base64');
-    const imageBlob = new Blob([byteCharacters], { type: mimeType });
+    const base64Data = dataUri.split(',')[1];
+    const imageBuffer = Buffer.from(base64Data, 'base64');
 
-    console.log('[HF Vision] Connecting to Nevesh06/Blaze...');
-    const { Client } = await import('@gradio/client');
-    const hfClient = await Client.connect('Nevesh06/Blaze');
-    console.log('[HF Vision] Connected. Sending image for prediction...');
+    // Step 1: Upload image to the Space
+    console.log('[HF Vision] Uploading image to Nevesh06/Blaze...');
+    const form = new FormData();
+    form.append('files', new Blob([imageBuffer], { type: mimeType }), 'complaint.jpg');
+    const uploadRes = await fetch(`${SPACE_URL}/gradio_api/upload`, { method: 'POST', body: form });
+    if (!uploadRes.ok) throw new Error(`Upload failed: HTTP ${uploadRes.status}`);
+    const [uploadedPath] = await uploadRes.json();
 
-    const result = await hfClient.predict('/predict_issue', { img: imageBlob });
+    // Step 2: Build the public URL for the uploaded file (served by the Space)
+    const fileUrl = `${SPACE_URL}/gradio_api/file=${uploadedPath}`;
+    console.log('[HF Vision] Image uploaded. Running prediction...');
 
-    if (!result || !result.data || !result.data[0]) {
-      throw new Error('HuggingFace model returned empty response');
+    // Step 3: Call /predict_issue via REST queue with the public URL
+    const sessionHash = Math.random().toString(36).substring(2, 10);
+    const queueBody = {
+      fn_index: 2,
+      data: [{ path: fileUrl, url: fileUrl, orig_name: 'complaint.jpg', meta: { _type: 'gradio.FileData' } }],
+      session_hash: sessionHash,
+      event_data: null
+    };
+    const joinRes = await fetch(`${SPACE_URL}/gradio_api/queue/join`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(queueBody)
+    });
+    if (!joinRes.ok) throw new Error(`Queue join failed: HTTP ${joinRes.status}`);
+
+    // Step 4: Read the SSE stream for the result
+    const sseRes = await fetch(`${SPACE_URL}/gradio_api/queue/data?session_hash=${sessionHash}`);
+    const sseText = await sseRes.text();
+
+    // Parse SSE lines — find the process_completed event
+    let prediction = null;
+    for (const line of sseText.split('\n')) {
+      if (!line.startsWith('data:')) continue;
+      try {
+        const msg = JSON.parse(line.slice(5).trim());
+        if (msg.msg === 'process_completed' && msg.success && msg.output?.data?.[0]) {
+          prediction = msg.output.data[0];
+          break;
+        }
+      } catch (_) { /* skip malformed lines */ }
     }
-
-    const prediction = result.data[0];
+    if (!prediction) throw new Error('No successful prediction in SSE stream');
     console.log(`[HF Vision] Prediction: issue="${prediction.issue}", department="${prediction.department}", confidence=${(prediction.confidence * 100).toFixed(1)}%`);
 
     return {
@@ -157,15 +188,26 @@ async function analyzeImage(base64Image) {
       detectedText: '',
       webEntities: [],
       source: 'hf-gradio',
-      directDepartment: prediction.department,
+      directDepartment: mapHFDepartment(prediction.department),
       directReason: prediction.issue,
       directConfidence: prediction.confidence
     };
   } catch (error) {
     console.error('[HF Vision] HuggingFace model failed:', error.message);
-    // Return empty result — mapToDepartment will do keyword fallback
     return { labels: [], objects: [], detectedText: '', webEntities: [], source: 'none' };
   }
+}
+
+// Map HF Space department names → our system's department names
+function mapHFDepartment(hfDept) {
+  const map = {
+    'Road Department': 'Roads & Highways',
+    'Sanitary Department': 'Sanitation',
+    'Water Department': 'Water Resources',
+    'Electrical Department': 'Electricity',
+    'Admin': 'General'
+  };
+  return map[hfDept] || hfDept || 'General';
 }
 
 /**

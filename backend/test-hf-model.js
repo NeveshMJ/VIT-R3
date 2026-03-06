@@ -1,29 +1,50 @@
 async function testCivicModel() {
-  console.log('Testing Custom Civic ML Model credentials...\n');
+  console.log('Testing Custom Civic ML Model (Nevesh06/Blaze)...\n');
+  const SPACE_URL = 'https://nevesh06-blaze.hf.space';
 
   try {
-    // 1. Import the Gradio client (dynamic import works perfectly with CommonJS)
-    const { Client } = await import('@gradio/client');
-    console.log('✅ Gradio client loaded');
+    // 1. Fetch a real test image (Lorem Picsum always returns a proper JPEG)
+    const testImageUrl = 'https://picsum.photos/seed/pothole/400/300.jpg';
+    console.log('Fetching test image...');
+    const imgRes = await fetch(testImageUrl);
+    const imgBuffer = Buffer.from(await imgRes.arrayBuffer());
+    console.log('\u2705 Test image fetched (', imgBuffer.length, 'bytes)');
 
-    // 2. Connect to your specific live Hugging Face Space
-    const client = await Client.connect("Nevesh06/Blaze");
-    console.log('✅ Connected to Hugging Face Space: Nevesh06/Blaze');
+    // 2. Upload image to the Space
+    console.log('Uploading to Space...');
+    const form = new FormData();
+    form.append('files', new Blob([imgBuffer], { type: 'image/jpeg' }), 'pothole.jpg');
+    const [uploadedPath] = await fetch(SPACE_URL + '/gradio_api/upload', { method: 'POST', body: form }).then(r => r.json());
+    const fileUrl = `${SPACE_URL}/gradio_api/file=${uploadedPath}`;
+    console.log('\u2705 Uploaded. File URL:', fileUrl);
 
-    // 3. Fetch a test image and convert it to a Blob 
-    // (Using a generic pothole image URL for testing)
-    const testImageUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Pothole_on_a_road.jpg/800px-Pothole_on_a_road.jpg';
-    
-    console.log('\nFetching test image...');
-    const response = await fetch(testImageUrl);
-    const imageBlob = await response.blob();
-    console.log('✅ Test image ready');
-
-    // 4. Call your custom predict_issue endpoint!
+    // 3. Call /predict_issue via REST queue (this is what works with public URLs)
     console.log('\nCalling Civic ML Model...');
-    const result = await client.predict("/predict_issue", {
-        img: imageBlob,
+    const sessionHash = Math.random().toString(36).substring(2, 10);
+    const queueBody = {
+      fn_index: 2,
+      data: [{ path: fileUrl, url: fileUrl, orig_name: 'pothole.jpg', meta: { _type: 'gradio.FileData' } }],
+      session_hash: sessionHash,
+      event_data: null
+    };
+    await fetch(SPACE_URL + '/gradio_api/queue/join', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(queueBody)
     });
+    const sseText = await fetch(`${SPACE_URL}/gradio_api/queue/data?session_hash=${sessionHash}`).then(r => r.text());
+    // Parse SSE to find process_completed
+    let result = null;
+    for (const line of sseText.split('\n')) {
+      if (!line.startsWith('data:')) continue;
+      try {
+        const msg = JSON.parse(line.slice(5).trim());
+        if (msg.msg === 'process_completed' && msg.success && msg.output?.data?.[0]) {
+          result = { data: msg.output.data };
+          break;
+        }
+      } catch (_) {}
+    }
 
     // 5. Output the results
     if (result && result.data) {

@@ -1,14 +1,21 @@
 const OpenAI = require('openai');
 
-// OpenRouter API — compatible with OpenAI SDK, uses DeepSeek model
-const openai = new OpenAI({
-  baseURL: 'https://openrouter.ai/api/v1',
-  apiKey: process.env.OPENROUTER_API_KEY,
-  defaultHeaders: {
-    'HTTP-Referer': 'https://tnsmp.gov.in',
-    'X-Title': 'Tamil Nadu Service Management Portal'
+// OpenRouter API — lazy-loaded so missing env vars don't crash the server
+let _openai = null;
+function getOpenAI() {
+  if (!_openai) {
+    if (!process.env.OPENROUTER_API_KEY) return null;
+    _openai = new OpenAI({
+      baseURL: 'https://openrouter.ai/api/v1',
+      apiKey: process.env.OPENROUTER_API_KEY,
+      defaultHeaders: {
+        'HTTP-Referer': 'https://tnsmp.gov.in',
+        'X-Title': 'Tamil Nadu Service Management Portal'
+      }
+    });
   }
-});
+  return _openai;
+}
 
 // ============================================================
 // MODEL CONFIG — OpenRouter DeepSeek
@@ -26,6 +33,13 @@ const CLOUD_COOLDOWN_MS = 5 * 60 * 1000; // 5 min cooldown after quota error
  * Utility: call OpenAI ChatGPT with retry logic + fast-fail for quota errors
  */
 async function callAI(prompt, maxTokens = 200) {
+  // Skip if API key is not configured
+  const openai = getOpenAI();
+  if (!openai) {
+    console.log('[OpenRouter SKIP] OPENROUTER_API_KEY not set');
+    return null;
+  }
+
   // Skip cloud call entirely if we recently hit a quota/billing error
   if (Date.now() < cloudDisabledUntil) {
     console.log(`[OpenRouter SKIP] Cloud API disabled until ${new Date(cloudDisabledUntil).toLocaleTimeString()} (cooldown)`);
