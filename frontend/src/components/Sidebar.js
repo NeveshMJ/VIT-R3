@@ -32,6 +32,8 @@ function Sidebar({ role }) {
       { path: '/user/dashboard', icon: '🏠', label: 'Dashboard' },
       { path: '/user/raise-complaint', icon: '📝', label: 'Raise Complaint' },
       { path: '/user/my-complaints', icon: '📋', label: 'My Complaints' },
+      { path: '/user/complaint-map', icon: '🗺️', label: 'Complaint Map' },
+      { path: '/user/weather', icon: '🌤️', label: 'Weather Report' },
     ],
     provider: [
       { path: '/provider/dashboard', icon: '🏠', label: 'Dashboard' },
@@ -73,8 +75,8 @@ function Sidebar({ role }) {
               justifyContent: 'center', fontSize: '13px', fontWeight: '900',
               boxShadow: '0 2px 8px rgba(255, 111, 0, 0.3)',
               flexShrink: 0
-            }}>TN</span>
-            TNSMP
+            }}>GX</span>
+            GRIEVEX
           </h3>
           <p style={{ marginTop: '14px', fontSize: '14px', fontWeight: '600', letterSpacing: '-0.2px' }}>{user.name}</p>
           <span className="role-badge">{roleLabels[role]}</span>

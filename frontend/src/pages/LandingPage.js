@@ -1,85 +1,65 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 function LandingPage() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
-    <div className="landing-page">
+    <div className="landing-page landing-single-frame">
+      {/* Navigation */}
       <nav className="landing-nav">
-        <div className="landing-logo">
-          <div className="emblem">TN</div>
-          <span>TNSMP</span>
-        </div>
-        <div className="landing-nav-btns">
-          <Link to="/login" className="btn btn-secondary">Login</Link>
-          <Link to="/signup" className="btn btn-primary">Sign Up</Link>
+        <div className="landing-nav-inner">
+          <div className="landing-logo">
+            <div className="emblem">GX</div>
+            <div className="landing-logo-text">
+              <span>GRIEVEX</span>
+            </div>
+          </div>
+
+          <button
+            className={`landing-hamburger ${mobileMenuOpen ? 'open' : ''}`}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            <span></span><span></span><span></span>
+          </button>
+
+          <div className={`landing-nav-btns ${mobileMenuOpen ? 'mobile-open' : ''}`}>
+            <Link to="/login" className="btn btn-secondary" onClick={() => setMobileMenuOpen(false)}>Login</Link>
+            <Link to="/signup" className="btn btn-primary" onClick={() => setMobileMenuOpen(false)}>Get Started</Link>
+          </div>
         </div>
       </nav>
 
+      {/* Hero */}
       <section className="landing-hero">
         <div className="landing-hero-content">
-          <div style={{ marginBottom: '20px' }}>
-            <span style={{
-              display: 'inline-block',
-              background: 'rgba(255,255,255,0.1)',
-              backdropFilter: 'blur(8px)',
-              border: '1px solid rgba(255,255,255,0.15)',
-              padding: '6px 18px',
-              borderRadius: '100px',
-              fontSize: '13px',
-              fontWeight: '600',
-              letterSpacing: '0.3px'
-            }}>
-              🤖 AI-Powered Complaint Management
-            </span>
-          </div>
-          <h1>Tamil Nadu Service Management Portal</h1>
-          <p>
-            A unified platform for citizens to report issues, track complaints, and 
-            connect with government departments. AI-powered prioritization ensures 
-            critical issues get addressed first.
+          <p className="landing-hero-eyebrow animate-landing-1">Grievance Resolution for Tamil Nadu</p>
+          <h1 className="animate-landing-2">
+            Raise your concern.<br />We handle the rest.
+          </h1>
+          <p className="landing-hero-subtitle animate-landing-3">
+            Snap a photo of any civic issue, and our system will route it
+            to the right department — with live tracking until it's resolved.
           </p>
-          <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/signup" className="btn btn-primary btn-lg">
-              Get Started →
+          <div className="landing-hero-cta animate-landing-4">
+            <Link to="/signup" className="btn btn-primary btn-lg landing-cta-main">
+              File a Grievance
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </Link>
             <Link to="/login" className="btn btn-secondary btn-lg">
-              Login
+              Sign In
             </Link>
           </div>
 
-          <div className="landing-features">
-            <div className="landing-feature-card">
-              <div className="icon">📸</div>
-              <h3>Smart Complaints</h3>
-              <p>Take a photo, AI auto-detects department & GPS captures your location</p>
-            </div>
-            <div className="landing-feature-card">
-              <div className="icon">🤖</div>
-              <h3>AI Priority & Detection</h3>
-              <p>DeepSeek AI prioritizes urgency & detects duplicate or fake complaints</p>
-            </div>
-            <div className="landing-feature-card">
-              <div className="icon">📊</div>
-              <h3>Live Tracking</h3>
-              <p>Amazon-style timeline from Registered → Accepted → Working → Completed</p>
-            </div>
-          </div>
-
-          <div style={{
-            display: 'flex', gap: '32px', justifyContent: 'center', marginTop: '48px',
-            flexWrap: 'wrap'
-          }}>
-            {[
-              { num: '37', label: 'Districts Covered' },
-              { num: '10', label: 'Departments' },
-              { num: '24/7', label: 'Available' },
-              { num: 'AI', label: 'Powered' }
-            ].map((stat, i) => (
-              <div key={i} style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '28px', fontWeight: '800', letterSpacing: '-1px' }}>{stat.num}</div>
-                <div style={{ fontSize: '12px', opacity: 0.6, fontWeight: '500', marginTop: '2px' }}>{stat.label}</div>
-              </div>
-            ))}
+          <div className="landing-stats-row animate-landing-5">
+            <div className="landing-stat-pill"><strong>37</strong> Districts</div>
+            <span className="landing-stat-sep">·</span>
+            <div className="landing-stat-pill"><strong>10+</strong> Departments</div>
+            <span className="landing-stat-sep">·</span>
+            <div className="landing-stat-pill"><strong>24/7</strong> Available</div>
+            <span className="landing-stat-sep">·</span>
+            <div className="landing-stat-pill"><strong>AI</strong> Powered</div>
           </div>
         </div>
       </section>

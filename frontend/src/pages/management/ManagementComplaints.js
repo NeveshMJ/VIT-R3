@@ -9,25 +9,24 @@ function ManagementComplaints() {
   const [expanded, setExpanded] = useState(null);
 
   useEffect(() => {
+    const fetchComplaints = async () => {
+      setLoading(true);
+      try {
+        const params = new URLSearchParams();
+        if (filters.department) params.append('department', filters.department);
+        if (filters.status) params.append('status', filters.status);
+        if (filters.priority) params.append('priority', filters.priority);
+
+        const res = await API.get(`/management/complaints?${params.toString()}`);
+        setComplaints(res.data);
+      } catch (err) {
+        console.error('Error:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchComplaints();
   }, [filters]);
-
-  const fetchComplaints = async () => {
-    setLoading(true);
-    try {
-      const params = new URLSearchParams();
-      if (filters.department) params.append('department', filters.department);
-      if (filters.status) params.append('status', filters.status);
-      if (filters.priority) params.append('priority', filters.priority);
-
-      const res = await API.get(`/management/complaints?${params.toString()}`);
-      setComplaints(res.data);
-    } catch (err) {
-      console.error('Error:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="dashboard-layout">

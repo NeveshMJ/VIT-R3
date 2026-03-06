@@ -49,18 +49,19 @@ function RaiseComplaint() {
   const [manualOverride, setManualOverride] = useState(false);
   const [manualDepartment, setManualDepartment] = useState('');
 
-  // Request geolocation when camera opens
+  // Start continuous GPS tracking when camera opens for real-time location
   useEffect(() => {
+    let watchId = null;
     if (showCamera) {
-      setLocationStatus('Acquiring GPS location...');
+      setLocationStatus('📡 Acquiring live GPS location...');
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
+        watchId = navigator.geolocation.watchPosition(
           (position) => {
             setLocation({
               latitude: position.coords.latitude,
               longitude: position.coords.longitude
             });
-            setLocationStatus(`📍 Location captured: ${position.coords.latitude.toFixed(4)}, ${position.coords.longitude.toFixed(4)}`);
+            setLocationStatus(`📍 Live location: ${position.coords.latitude.toFixed(4)}, ${position.coords.longitude.toFixed(4)} (accuracy: ${position.coords.accuracy.toFixed(0)}m)`);
           },
           (err) => {
             console.error('Geolocation error:', err);
@@ -72,6 +73,9 @@ function RaiseComplaint() {
         setLocationStatus('⚠️ Geolocation not supported by browser');
       }
     }
+    return () => {
+      if (watchId !== null) navigator.geolocation.clearWatch(watchId);
+    };
   }, [showCamera]);
 
   // Reverse geocode to get address when location changes
@@ -134,26 +138,40 @@ function RaiseComplaint() {
       setShowCamera(false);
       // Trigger Vision API analysis
       analyzePhoto(imageSrc);
-      // Re-capture location at the moment of photo capture for accuracy
+
+      // ** CRITICAL: Capture fresh, real-time location at the exact moment of photo capture **
+      // Always request a brand-new GPS fix with maximumAge: 0 to prevent stale/cached data
       if (navigator.geolocation) {
+        setLocationStatus('📡 Locking fresh GPS at photo capture moment...');
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
+            const accuracy = position.coords.accuracy;
             setLocation({ latitude: lat, longitude: lng });
-            setLocationStatus(`📍 Location: ${lat.toFixed(4)}, ${lng.toFixed(4)}`);
-            // Reverse geocode to auto-fill address
+            setLocationStatus(`📍 Live location captured: ${lat.toFixed(4)}, ${lng.toFixed(4)} (±${accuracy.toFixed(0)}m)`);
+            // Reverse geocode fresh coordinates
             reverseGeocode(lat, lng);
           },
-          () => {} // silently fail if already captured
+          (err) => {
+            console.warn('Fresh GPS failed, using last tracked location:', err.message);
+            // Fallback: use the last tracked location from watchPosition
+            if (location.latitude && location.longitude) {
+              setLocationStatus(`📍 Location: ${location.latitude.toFixed(4)}, ${location.longitude.toFixed(4)} (last tracked)`);
+              reverseGeocode(location.latitude, location.longitude);
+            } else {
+              setLocationStatus('⚠️ GPS unavailable — please select area manually');
+              setManualAreaOverride(true);
+            }
+          },
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
         );
-      }
-      // Also try existing location
-      if (location.latitude && location.longitude && !detectedAddress) {
+      } else if (location.latitude && location.longitude) {
+        // Browser doesn't support geolocation, use last tracked
         reverseGeocode(location.latitude, location.longitude);
       }
     }
-  }, [webcamRef, analyzePhoto, reverseGeocode, location, detectedAddress]);
+  }, [webcamRef, analyzePhoto, reverseGeocode, location, setManualAreaOverride]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -48,55 +48,99 @@ function Login() {
     }
   };
 
+  const fillCredentials = (email, password) => {
+    setForm({ email, password });
+    setError('');
+  };
+
   return (
     <div className="auth-page">
-      <div className="auth-card">
-        <div className="logo-section">
-          <div className="emblem">TN</div>
-          <h2>Welcome Back</h2>
-          <p className="subtitle">Login to TNSMP Portal</p>
-        </div>
-
-        {error && <div className="error-msg">{error}</div>}
-
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Email Address</label>
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              value={form.email}
-              onChange={handleChange}
-              required
-            />
+      <div className="auth-layout">
+        <div className="auth-card">
+          <div className="logo-section">
+            <div className="emblem">GX</div>
+            <h2>Welcome Back</h2>
+            <p className="subtitle">Login to GRIEVEX Portal</p>
           </div>
 
-          <div className="form-group">
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Enter your password"
-              value={form.password}
-              onChange={handleChange}
-              required
-            />
+          {error && <div className="error-msg">{error}</div>}
+
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Email Address</label>
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                value={form.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Password</label>
+              <input
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+                value={form.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <button type="submit" className="btn btn-primary auth-submit" disabled={loading}>
+              {loading ? 'Logging in...' : 'Login'}
+            </button>
+          </form>
+
+          <div className="auth-link">
+            Don't have an account? <Link to="/signup">Sign Up</Link>
           </div>
-
-          <button type="submit" className="btn btn-primary auth-submit" disabled={loading}>
-            {loading ? 'Logging in...' : 'Login'}
-          </button>
-        </form>
-
-        <div className="auth-link">
-          Don't have an account? <Link to="/signup">Sign Up</Link>
         </div>
 
-        <div style={{ borderTop: '1px solid #e5e7eb', marginTop: '20px', paddingTop: '16px' }}>
-          <p style={{ fontSize: '12px', color: '#9ca3af', textAlign: 'center' }}>
-            Management Login: admin@tnsmp.gov.in
-          </p>
+        <div className="credentials-box">
+          <h3>Demo Credentials</h3>
+          <p className="credentials-hint">Click a button to auto-fill the login form</p>
+
+          <div className="credential-item">
+            <span className="credential-role">User Account</span>
+            <div className="credential-detail">
+              <span className="credential-label">Email</span>
+              <span className="credential-value">prajinkumar2020@gmail.com</span>
+            </div>
+            <div className="credential-detail">
+              <span className="credential-label">Password</span>
+              <span className="credential-value">Prajin@123</span>
+            </div>
+            <button
+              type="button"
+              className="btn credential-btn"
+              onClick={() => fillCredentials('prajinkumar2020@gmail.com', 'Prajin@123')}
+            >
+              Use User Login
+            </button>
+          </div>
+
+          <div className="credential-item">
+            <span className="credential-role">Admin Account</span>
+            <div className="credential-detail">
+              <span className="credential-label">Email</span>
+              <span className="credential-value">admin@tnsmp.gov.in</span>
+            </div>
+            <div className="credential-detail">
+              <span className="credential-label">Password</span>
+              <span className="credential-value">admin@tnsmp2026</span>
+            </div>
+            <button
+              type="button"
+              className="btn credential-btn"
+              onClick={() => fillCredentials('admin@tnsmp.gov.in', 'admin@tnsmp2026')}
+            >
+              Use Admin Login
+            </button>
+          </div>
         </div>
       </div>
     </div>

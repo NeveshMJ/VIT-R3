@@ -6,6 +6,8 @@ import VerifyOTP from './pages/VerifyOTP';
 import UserDashboard from './pages/user/UserDashboard';
 import RaiseComplaint from './pages/user/RaiseComplaint';
 import MyComplaints from './pages/user/MyComplaints';
+import ComplaintMap from './pages/user/ComplaintMap';
+import WeatherReport from './pages/user/WeatherReport';
 import ProviderDashboard from './pages/provider/ProviderDashboard';
 import ManagementDashboard from './pages/management/ManagementDashboard';
 import ManageProviders from './pages/management/ManageProviders';
@@ -47,6 +49,16 @@ function App() {
           <Route path="/user/my-complaints" element={
             <ProtectedRoute allowedRoles={['user']}>
               <MyComplaints />
+            </ProtectedRoute>
+          } />
+          <Route path="/user/complaint-map" element={
+            <ProtectedRoute allowedRoles={['user']}>
+              <ComplaintMap />
+            </ProtectedRoute>
+          } />
+          <Route path="/user/weather" element={
+            <ProtectedRoute allowedRoles={['user']}>
+              <WeatherReport />
             </ProtectedRoute>
           } />
 

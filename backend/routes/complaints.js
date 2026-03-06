@@ -349,6 +349,44 @@ router.get('/my', auth(['user']), async (req, res) => {
   }
 });
 
+// GET all complaints for map view (lightweight, no photos)
+router.get('/map-data', auth(['user', 'management']), async (req, res) => {
+  try {
+    const complaints = await Complaint.find({ 'location.latitude': { $exists: true, $ne: null } })
+      .select('ticketId area department status priority location address description createdAt')
+      .sort({ createdAt: -1 })
+      .lean();
+    res.json(complaints);
+  } catch (error) {
+    console.error('Map data error:', error.message);
+    res.status(500).json({ message: 'Server error fetching map data' });
+  }
+});
+
+// GET all complaints for user dashboard (with area/status filtering, no photos for performance)
+router.get('/all-public', auth(['user', 'management']), async (req, res) => {
+  try {
+    const { area, status, department } = req.query;
+    const filter = {};
+    if (area) filter.area = area;
+    if (status) {
+      if (status === 'Solved') filter.status = 'Completed';
+      else if (status === 'Pending') filter.status = { $in: ['Registered', 'Accepted', 'Working On'] };
+      else filter.status = status;
+    }
+    if (department) filter.department = department;
+
+    const complaints = await Complaint.find(filter)
+      .select('ticketId userName area department status priority location address description createdAt updatedAt assignedToName isDuplicate aiRemarks')
+      .sort({ createdAt: -1 })
+      .lean();
+    res.json(complaints);
+  } catch (error) {
+    console.error('All-public error:', error.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // GET single complaint
 router.get('/:id', auth(), async (req, res) => {
   try {

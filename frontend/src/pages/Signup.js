@@ -47,9 +47,9 @@ function Signup() {
     <div className="auth-page">
       <div className="auth-card">
         <div className="logo-section">
-          <div className="emblem">TN</div>
+          <div className="emblem">GX</div>
           <h2>Create Account</h2>
-          <p className="subtitle">Join TNSMP to report and track issues</p>
+          <p className="subtitle">Join GRIEVEX to report and track issues</p>
         </div>
 
         {error && <div className="error-msg">{error}</div>}

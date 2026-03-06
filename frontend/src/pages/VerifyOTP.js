@@ -12,14 +12,18 @@ function VerifyOTP() {
   const [success, setSuccess] = useState(location.state?.message || '');
   const [loading, setLoading] = useState(false);
   const [resending, setResending] = useState(false);
-  const inputRefs = [useRef(), useRef(), useRef(), useRef()];
+  const inputRef0 = useRef();
+  const inputRef1 = useRef();
+  const inputRef2 = useRef();
+  const inputRef3 = useRef();
+  const inputRefs = React.useMemo(() => [inputRef0, inputRef1, inputRef2, inputRef3], []);
 
   useEffect(() => {
     if (!email) {
       navigate('/signup');
     }
     inputRefs[0].current?.focus();
-  }, [email, navigate]);
+  }, [email, navigate, inputRefs]);
 
   const handleChange = (index, value) => {
     if (value.length > 1) return;
