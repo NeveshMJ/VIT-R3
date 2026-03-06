@@ -1,6 +1,405 @@
-# GRIEVEX — AI-Powered Civic Grievance Management Platform
+# Round 2 — GRIEVEX: AI-Powered Civic Grievance Management Platform
 
 > Raise your concern. We handle the rest.
+
+**GRIEVEX** is a full-stack, AI-integrated civic grievance platform built for Tamil Nadu citizens to report, track, and resolve public service issues — powered by **Google Cloud Vision API**, **DeepSeek LLM via OpenRouter**, **GPS-based geolocation**, **real-time weather intelligence**, and a **role-based multi-dashboard architecture**.
+
+---
+
+## Live Demo
+
+| Service | URL |
+|---|---|
+| Frontend (Vercel) | https://vit-chi.vercel.app |
+
+---
+
+## Demo Credentials
+
+| Role | Email | Password |
+|---|---|---|
+| **User** | prajinkumar2020@gmail.com | Prajin@123 |
+| **Admin / Management** | admin@tnsmp.gov.in | admin@tnsmp2026 |
+
+> Credentials are pre-filled on the login page — one click to access.
+
+---
+
+## Table of Contents
+
+1. [Overview](#overview)
+2. [Feature 1 — Smart Complaint GeoMap](#feature-1--smart-complaint-geomap-)
+3. [Feature 2 — Disaster Weather Intelligence](#feature-2--disaster-weather-intelligence-)
+4. [Feature 3 — StateWise Civic Analytics Dashboard](#feature-3--statewise-civic-analytics-dashboard-)
+5. [Feature 4 — Admin Intelligence Control Panel](#feature-4--admin-intelligence-control-panel-)
+6. [Feature 5 — Smart Job Allocation Engine](#feature-5--smart-job-allocation-engine-)
+7. [AI & ML Core](#ai--ml-core)
+8. [Tech Stack](#tech-stack)
+9. [Roles & Access Control](#roles--access-control)
+10. [Installation](#installation)
+11. [Environment Variables](#environment-variables)
+12. [Project Structure](#project-structure)
+
+---
+
+## Overview
+
+GRIEVEX bridges the gap between Tamil Nadu citizens and government service providers by digitising and automating the entire grievance lifecycle — from submission and AI-based classification, to prioritisation, assignment, resolution, and feedback.
+
+Instead of citizens calling helplines or physically visiting offices, GRIEVEX provides a transparent, real-time, AI-driven platform where every complaint is tracked, prioritised, and resolved efficiently.
+
+---
+
+## Feature Summary
+
+| # | Feature Name | Core Technology |
+|---|---|---|
+| 1 | Smart Complaint GeoMap | GPS + Google Maps Geocoding + Interactive Map |
+| 2 | Disaster Weather Intelligence | Open-Meteo API + GPS + Weather WMO Codes |
+| 3 | StateWise Civic Analytics Dashboard | MongoDB Aggregation + Real-time Charts |
+| 4 | Admin Intelligence Control Panel | Role-Based Analytics + Provider Metrics |
+| 5 | Smart Job Allocation Engine | AI Priority Queue + Department Routing |
+
+---
+
+## Feature 1 — Smart Complaint GeoMap 🌍
+
+### What It Is
+
+The **Smart Complaint GeoMap** visually displays all reported civic complaints on an interactive map. Every complaint submitted with GPS location data is plotted as a pin, colour-coded by department and priority. Citizens and administrators can instantly see complaint **clusters and problem hotspots** across Tamil Nadu.
+
+### How It Works
+
+- When a user raises a complaint, the app captures **live GPS coordinates** via `navigator.geolocation.watchPosition` (high accuracy mode).
+- Coordinates are sent to the **Google Maps Geocoding API** for reverse geocoding into human-readable district/area names.
+- On the Complaint Map page, all public complaints are fetched and rendered as map markers with popup info (department, status, priority, description).
+- Users can filter by department, area, or status directly on the map.
+
+### Advantages
+
+| Advantage | Impact |
+|---|---|
+| Identify high-risk hotspot areas | Faster infrastructure repair planning |
+| Real-time complaint visualisation | Citizens and officials see the same live data |
+| Location-based clustering | Prioritise areas with multiple complaints |
+| Transparent mapping | Builds public trust in the platform |
+| GPS accuracy | Eliminates incorrect area reports |
+
+---
+
+## Feature 2 — Disaster Weather Intelligence 🌦️
+
+### What It Is
+
+**Disaster Weather Intelligence** integrates real-time weather data with the complaint management system. It provides current weather conditions for all **37 Tamil Nadu districts**, helping correlate weather events (floods, storms, heatwaves) with the types of complaints being reported.
+
+### How It Works
+
+- Users access the Weather Report page from their dashboard.
+- The app first requests **GPS location** to auto-detect the user's city.
+- Weather data is fetched from the **Open-Meteo API** (free, no API key) using WMO weather codes mapped to descriptive conditions.
+- Data shown: Temperature, Wind Speed, Humidity, Precipitation, UV Index, Weather Condition with emoji and description.
+- Users can also manually select from all 37 Tamil Nadu district cities.
+- The system maps **37 Tamil Nadu cities with lat/lng coordinates** for precise weather fetching.
+
+### Why It Matters for Disaster Response
+
+- Flood alerts → correlate with **Water Resources** complaint spikes
+- Storm warnings → predict surge in **Roads & Highways** and **Electricity** complaints
+- Helps authorities **pre-position teams** before complaints arrive en masse
+
+### Advantages
+
+| Advantage | Impact |
+|---|---|
+| Real-time weather awareness | Informed decision making |
+| District-level granularity | Hyper-local weather for TN's 37 districts |
+| Complaint-weather correlation | Predictive disaster response |
+| GPS auto-location | No manual city selection needed |
+| Zero API cost | Built on Open-Meteo's free tier |
+
+---
+
+## Feature 3 — StateWise Civic Analytics Dashboard 📊
+
+### What It Is
+
+**StateWise Civic Analytics** provides state-level statistical insights combining all complaints across Tamil Nadu's 37 districts. It shows complaint distribution, resolution rates, department breakdown, and area-wise trends — all in real time.
+
+### How It Works
+
+- The Management Dashboard aggregates all complaint data from MongoDB using indexed queries.
+- KPI cards show: Total Complaints, Resolved, Pending, Critical priority count.
+- Department-wise breakdown shows which civic sector has the most unresolved issues.
+- Area/district filter shows all complaints for a specific region.
+- Admins can drill down by status, department, and date.
+- All data updates live without page reload.
+
+### Advantages
+
+| Advantage | Impact |
+|---|---|
+| State-level analytics | Birds-eye view of all civic issues |
+| Department breakdown | Identify under-performing departments |
+| District-wise filtering | Region-specific planning |
+| Real-time data | Always current, no stale reports |
+| Data-driven governance | Supports evidence-based policy making |
+
+---
+
+## Feature 4 — Admin Intelligence Control Panel 🧠
+
+### What It Is
+
+The **Admin Intelligence Control Panel** is a comprehensive management dashboard giving administrators **full visibility and control** over the entire platform — users, service providers, complaints, assignments, and resolution performance.
+
+### What It Shows
+
+| Panel | Data Points |
+|---|---|
+| KPI Overview | Total complaints, resolved, pending, critical count |
+| Complaint Table | All complaints with full detail, filtering, search |
+| Assignment Engine | Assign complaint → provider with one click |
+| Provider Panel | All provider accounts, department, workload |
+| AI Remarks | AI-generated analysis for every complaint |
+| Status Override | Admins can override complaint status at any stage |
+
+### How It Works
+
+- Role-based auth ensures only `management` role users can access these routes.
+- The dashboard calls `/api/management/dashboard` which returns aggregated MongoDB stats.
+- The complaints table supports filter by status, department, area, and priority.
+- Provider management allows creating, viewing, and deleting provider accounts.
+- All data is fetched with JWT authentication and real-time.
+
+### Advantages
+
+| Advantage | Impact |
+|---|---|
+| Full system visibility | Nothing is missed by administrators |
+| Service provider tracking | Measure individual provider performance |
+| Complaint assignment | Efficient delegation, no bottlenecks |
+| AI remarks visible | AI decisions are transparent and auditable |
+| One unified panel | No switching between multiple tools |
+
+---
+
+## Feature 5 — Smart Job Allocation Engine ⚙️
+
+### What It Is
+
+The **Smart Job Allocation Engine** is an AI-powered priority queue system that automatically classifies, ranks, and routes complaints to the correct government department and service provider — based on image analysis, text understanding, and urgency scoring.
+
+### How It Works — End-to-End Pipeline
+
+```
+User submits complaint (photo + description + GPS)
+          │
+          ▼
+┌─────────────────────────────────┐
+│  Google Cloud Vision API        │
+│  Analyses photo → detects       │
+│  labels, objects, text          │
+│  → maps to department keywords  │
+└──────────────┬──────────────────┘
+               │  (fallback if Vision fails)
+               ▼
+┌─────────────────────────────────┐
+│  OpenRouter DeepSeek LLM        │
+│  Reads description + photo      │
+│  → Outputs department + priority│
+│  → Detects duplicate/fake       │
+└──────────────┬──────────────────┘
+               │
+               ▼
+┌─────────────────────────────────┐
+│  Priority Assignment            │
+│  Critical / High / Medium / Low │
+│  Based on: severity, location,  │
+│  disaster conditions, LLM score │
+└──────────────┬──────────────────┘
+               │
+               ▼
+┌─────────────────────────────────┐
+│  Admin assigns to Provider      │
+│  Provider sees sorted queue     │
+│  Critical → top of queue        │
+└─────────────────────────────────┘
+```
+
+### AI Capabilities
+
+| Capability | Technology | Fallback |
+|---|---|---|
+| Image → Department | Google Cloud Vision API | Keyword NLP (offline) |
+| Text → Department | DeepSeek LLM via OpenRouter | Keyword NLP (offline) |
+| Priority scoring | DeepSeek LLM | Rule-based scoring |
+| Duplicate detection | AI similarity analysis | None |
+| Fake complaint detection | LLM content analysis | None |
+| Department routing | Weighted keyword mapping | Always available |
+
+### Priority Queue Logic
+
+Complaints are ranked by priority level before display in provider dashboards:
+
+```
+1. 🔴 Critical  — Immediate threat (flood, power outage, road collapse)
+2. 🟠 High      — Urgent issue affecting many people
+3. 🟡 Medium    — Significant but non-emergency issue
+4. 🟢 Low       — Minor inconvenience or routine maintenance
+```
+
+### Advantages
+
+| Advantage | Impact |
+|---|---|
+| AI auto-classification | Zero manual triage needed |
+| Priority queue ranking | Critical issues solved first |
+| Duplicate filtering | Avoids duplicate work |
+| Fake complaint detection | Reduces spam and misuse |
+| Offline fallback NLP | System never breaks, always classifies |
+| GPS-based routing | Complaints go to correct district teams |
+
+---
+
+## AI & ML Core
+
+### Google Cloud Vision API
+Analyses each complaint photo to detect labels, objects, and text. Labels are matched against a weighted keyword dictionary for 10 departments. The department with the highest keyword-match score is selected.
+
+### DeepSeek v3 LLM (via OpenRouter)
+Processes the complaint text description and returns structured JSON with: department, priority level, duplicate detection flag, and reasoning.
+
+### Offline NLP Fallback
+A comprehensive keyword dictionary for all 10 departments (Water, Electricity, Roads, Sanitation, Health, Education, Transport, Revenue, Agriculture, General) ensures the system always functions even when cloud AI is unavailable.
+
+### Amazon-Style Status Timeline
+Every complaint tracks a full history — `Registered → Accepted → Working On → Completed / Rejected` — with timestamps, provider names, and resolution notes at each stage.
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | React.js, React Router DOM, Axios |
+| Styling | Custom CSS Design System (App.css) |
+| Camera | react-webcam (in-browser live capture) |
+| Weather | Open-Meteo API (free, no key required) |
+| Geocoding | Google Maps Geocoding API |
+| Backend | Node.js, Express.js |
+| Database | MongoDB + Mongoose (indexed collections) |
+| Auth | JWT + bcryptjs |
+| Email | Nodemailer + Gmail SMTP (OTP + notifications) |
+| AI Vision | Google Cloud Vision API |
+| AI Text | OpenRouter API (DeepSeek Chat v3) |
+| Deployment | Vercel (Frontend) |
+
+---
+
+## Roles & Access Control
+
+| Role | Access |
+|---|---|
+| `user` | Raise complaints, track status, view map, weather, rate completed complaints |
+| `provider` | View assigned complaints, update status, add resolution notes |
+| `management` | Full admin panel, analytics, assignment engine, provider management |
+
+All routes are protected with JWT middleware. Role mismatches return 403.
+
+---
+
+## Installation
+
+```bash
+# Clone the repo
+git clone https://github.com/NeveshMJ/vit.git
+cd vit
+
+# Backend
+cd backend
+npm install
+# Add .env file (see below)
+node server.js
+
+# Frontend
+cd ../frontend
+npm install
+npm start
+```
+
+---
+
+## Environment Variables
+
+Create `backend/.env`:
+
+```env
+PORT=5000
+MONGODB_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/grievex
+JWT_SECRET=your_jwt_secret
+
+EMAIL_USER=your_gmail@gmail.com
+EMAIL_PASS=your_gmail_app_password
+
+OPENROUTER_API_KEY=sk-or-v1-...
+GOOGLE_CREDENTIALS={"type":"service_account","project_id":"..."}
+GOOGLE_MAPS_API_KEY=AIza...
+```
+
+---
+
+## Project Structure
+
+```
+grievex/
+├── backend/
+│   ├── server.js
+│   ├── middleware/auth.js
+│   ├── models/
+│   │   ├── User.js
+│   │   └── Complaint.js
+│   ├── routes/
+│   │   ├── auth.js
+│   │   ├── complaints.js
+│   │   ├── management.js
+│   │   └── provider.js
+│   └── utils/
+│       ├── gemini.js       ← DeepSeek LLM integration
+│       ├── vision.js       ← Google Vision + fallback NLP
+│       └── mailer.js       ← OTP + email notifications
+├── frontend/src/
+│   ├── pages/
+│   │   ├── LandingPage.js
+│   │   ├── Login.js
+│   │   ├── Signup.js
+│   │   ├── VerifyOTP.js
+│   │   ├── user/
+│   │   │   ├── UserDashboard.js
+│   │   │   ├── RaiseComplaint.js   ← Webcam + GPS + AI
+│   │   │   ├── MyComplaints.js
+│   │   │   ├── ComplaintMap.js     ← Feature 1: GeoMap
+│   │   │   └── WeatherReport.js    ← Feature 2: Weather Intelligence
+│   │   ├── provider/
+│   │   │   └── ProviderDashboard.js
+│   │   └── management/
+│   │       ├── ManagementDashboard.js   ← Feature 3 & 4
+│   │       ├── ManagementComplaints.js
+│   │       └── ManageProviders.js
+│   └── components/Sidebar.js
+└── vercel.json
+```
+
+---
+
+## License
+
+MIT License — Open for educational and hackathon use.
+
+---
+
+*Built for Tamil Nadu. Powered by AI. Designed for citizens.*
+
 
 GRIEVEX is a full-stack, AI-integrated civic grievance platform built for Tamil Nadu citizens to report, track, and resolve public service issues — powered by Google Cloud Vision, DeepSeek LLM via OpenRouter, GPS-based geolocation, real-time weather intelligence, and a role-based multi-dashboard architecture.
 
