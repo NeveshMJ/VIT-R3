@@ -36,6 +36,7 @@ function UserDashboard() {
 
   useEffect(() => {
     if (activeTab === 'all') fetchAllComplaints();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, areaFilter, statusFilter, deptFilter]);
 
   const fetchMyComplaints = async () => {
@@ -68,7 +69,6 @@ function UserDashboard() {
   const registered = myComplaints.filter(c => c.status === 'Registered').length;
   const active = myComplaints.filter(c => c.status === 'Accepted' || c.status === 'Working On').length;
   const completed = myComplaints.filter(c => c.status === 'Completed').length;
-  const rejected = myComplaints.filter(c => c.status === 'Rejected').length;
 
   // Stats for all complaints
   const allSolved = allComplaints.filter(c => c.status === 'Completed').length;
