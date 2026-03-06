@@ -141,6 +141,25 @@ function Login() {
               Use Admin Login
             </button>
           </div>
+
+          <div className="credential-item">
+            <span className="credential-role">Service Provider Account</span>
+            <div className="credential-detail">
+              <span className="credential-label">Email</span>
+              <span className="credential-value">mjnevesh06@gmail.com</span>
+            </div>
+            <div className="credential-detail">
+              <span className="credential-label">Password</span>
+              <span className="credential-value">Prajin@123</span>
+            </div>
+            <button
+              type="button"
+              className="btn credential-btn"
+              onClick={() => fillCredentials('mjnevesh06@gmail.com', 'Prajin@123')}
+            >
+              Use Provider Login
+            </button>
+          </div>
         </div>
       </div>
     </div>
