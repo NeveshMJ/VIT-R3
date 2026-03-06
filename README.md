@@ -62,6 +62,25 @@ Instead of citizens calling helplines or physically visiting offices, GRIEVEX pr
 
 ---
 
+## Screenshots
+
+<table>
+  <tr>
+    <td align="center"><img src="screenshots/screenshot-1.png" width="480"/></td>
+    <td align="center"><img src="screenshots/screenshot-2.png" width="480"/></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="screenshots/screenshot-3.png" width="480"/></td>
+    <td align="center"><img src="screenshots/screenshot-4.png" width="480"/></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="screenshots/screenshot-5.png" width="480"/></td>
+    <td></td>
+  </tr>
+</table>
+
+---
+
 ## Feature 1 — Smart Complaint GeoMap 🌍
 
 ### What It Is
