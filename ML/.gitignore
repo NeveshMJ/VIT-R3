@@ -1,0 +1,36 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+.env/
+
+# Model files (large binary)
+*.h5
+*.hdf5
+*.pkl
+*.pt
+*.pth
+
+# Dataset (too large for Git)
+dataset/
+
+# Uploads
+uploads/
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
